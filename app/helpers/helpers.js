@@ -2,19 +2,9 @@
 import axios from 'axios';
 import { Alert, Dimensions, PixelRatio, Platform } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-
-
 import colors from '../values/colors';
 
 
-Array.prototype.filterSplit = function (cb) {
-  const nonFiltereds = [];
-  const filtereds = this.filter(item => {
-    if (!cb(item)) nonFiltereds.push(item);
-    return cb(item);
-  })
-  return [filtereds, nonFiltereds];
-};
 
 class Helpers {
   constructor() {
