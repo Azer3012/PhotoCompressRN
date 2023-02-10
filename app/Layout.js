@@ -4,9 +4,9 @@ import {useNavigation} from '@react-navigation/native';
 import colors from './values/colors';
 import helpers from './helpers/helpers';
 import Entypo from 'react-native-vector-icons/Entypo';
-import NetInfo from '@react-native-community/netinfo';
-import { useDispatch, useSelector } from 'react-redux';
-import { checkConnection } from './redux/features/networkSlice';
+// import NetInfo from '@react-native-community/netinfo';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { checkConnection } from './redux/features/networkSlice';
 
 
 
@@ -28,18 +28,18 @@ const Layout = ({
   isService = false,
   customHeaderTextStyle,
 }) => {
-  const dispatch=useDispatch()
-  const isConnected = useSelector(state => state.network.isConnected);
+  // const dispatch=useDispatch()
+  // const isConnected = useSelector(state => state.network.isConnected);
  
-  useEffect(()=>{
-     // Subscribe
-     const unsubscribe = NetInfo.addEventListener(state => {
-      dispatch(checkConnection(state.isConnected));
-    });
+  // useEffect(()=>{
+  //    // Subscribe
+  //    const unsubscribe = NetInfo.addEventListener(state => {
+  //     dispatch(checkConnection(state.isConnected));
+  //   });
 
-    // Unsubscribe
-    return () => unsubscribe();
-  },[isConnected])
+  //   // Unsubscribe
+  //   return () => unsubscribe();
+  // },[isConnected])
   
   const navigation = useNavigation();
   const colorAnim = useRef(new Animated.Value(0)).current;
