@@ -25,16 +25,34 @@ export const requestCameraPermission = async (): Promise<void> => {
 
 }
 
-export const selectImage = async (width:number=413,height:number=531):Promise<{path:string;error:unknown | null}> => {
+type ImageResultType = {
+    path: string;
+    error: unknown | null
+}
+
+export const selectImage = async (width: number = 413, height: number = 531): Promise<ImageResultType> => {
     try {
         const { path } = await ImagePicker.openCamera({
             width,
             height,
             cropping: true
         })
-        return {path,error:null}
+        return { path, error: null }
     }
     catch (error) {
-       return {path:'',error}
+        return { path: '', error }
+    }
+}
+export const selectImageFromDevice = async (width: number = 413, height: number = 531): Promise<ImageResultType> => {
+    try {
+        const { path } = await ImagePicker.openPicker({
+            width,
+            height,
+            cropping: true
+        })
+        return { path, error: null }
+    }
+    catch (error) {
+        return { path: '', error }
     }
 }
