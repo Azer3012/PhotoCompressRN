@@ -4,11 +4,26 @@ import {useNavigation} from '@react-navigation/native';
 import colors from './values/colors';
 import helpers from './helpers/helpers';
 import Entypo from 'react-native-vector-icons/Entypo';
-// import NetInfo from '@react-native-community/netinfo';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { checkConnection } from './redux/features/networkSlice';
 
 
+type LayoutProps={
+  headerText?:string
+  children:JSX.Element,
+  hasHeader?:boolean,
+  style?:any,
+  type?:string,
+  imageHeight?:number,
+  backgorundImage?:string,
+  backButtonHasCustomCallback?:boolean,
+  backButtonCustomCallback?:any,
+  hasBackButton?:boolean,
+  hasLinkButton?:boolean,
+  linkButtonAction?:any,
+  loader?:boolean,
+  violetBorder?:any,
+  isService?:boolean,
+  customHeaderTextStyle?:any,
+}
 
 const Layout = ({
   headerText,
@@ -27,19 +42,7 @@ const Layout = ({
   violetBorder,
   isService = false,
   customHeaderTextStyle,
-}) => {
-  // const dispatch=useDispatch()
-  // const isConnected = useSelector(state => state.network.isConnected);
- 
-  // useEffect(()=>{
-  //    // Subscribe
-  //    const unsubscribe = NetInfo.addEventListener(state => {
-  //     dispatch(checkConnection(state.isConnected));
-  //   });
-
-  //   // Unsubscribe
-  //   return () => unsubscribe();
-  // },[isConnected])
+}:LayoutProps) => {
   
   const navigation = useNavigation();
   const colorAnim = useRef(new Animated.Value(0)).current;
