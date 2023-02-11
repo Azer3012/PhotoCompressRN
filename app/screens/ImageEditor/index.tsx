@@ -5,6 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../Stacks/Stacks';
 import ImageEditorHeader from '../../components/ImageEditorHeader';
 import helpers from '../../helpers/helpers';
+import BackgroundImage from '../../components/BackgroundImage';
 
 type RouteProps=NativeStackScreenProps<RootStackParamList,'ImageEditor'>
 interface Props {
@@ -16,6 +17,7 @@ const ImageEditor: FC<Props> = ({route}): JSX.Element => {
     return (
             <View style={styles.container}>
                 <ImageEditorHeader/>
+                <BackgroundImage/>
             </View>
        
 
