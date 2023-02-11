@@ -3,22 +3,29 @@ import React, { FC } from 'react';
 import helpers from '../../helpers/helpers';
 import LargeButton from '../../components/LargeButton';
 import { requestCameraPermission, selectImage, selectImageFromDevice } from '../../utils/utils';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../Stacks/Stacks';
 
-interface Props { }
+interface Props { 
+  navigation:NavigationProp<RootStackParamList>
+}
 
-const Home: FC<Props> = (): JSX.Element => {
 
 
+const Home: FC<Props> = ({navigation}): JSX.Element => {
+
+  
   const handleImageCapture = async (): Promise<void> => {
     if (!helpers.isIOS) {
       await requestCameraPermission()
     }
     const { path, error } = await selectImage()
-
+    navigation.navigate("ImageEditor",{imageUri:path})
   }
   const handleImageSelection=async():Promise<void>=>{
 
     const {path, error}=await selectImageFromDevice()
+    navigation.navigate("ImageEditor",{imageUri:path})
   }
   return (
     <View style={styles.container}>
