@@ -7,6 +7,7 @@ import ImageEditorHeader from '../../components/ImageEditorHeader';
 import helpers from '../../helpers/helpers';
 import BackgroundImage from '../../components/BackgroundImage';
 import SelectedImage from '../../components/SelectedImage';
+import EditorTools from '../../components/EditorTools';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'ImageEditor'>
 interface Props {
@@ -22,6 +23,7 @@ const ImageEditor: FC<Props> = ({ route }): JSX.Element => {
             <View style={styles.imageContainer}>
                 <SelectedImage uri={imageUri} />
             </View>
+            <EditorTools/>
         </View>
 
 
