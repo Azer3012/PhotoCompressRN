@@ -6,26 +6,28 @@ import { requestCameraPermission, selectImage, selectImageFromDevice } from '../
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../Stacks/Stacks';
 
-interface Props { 
-  navigation:NavigationProp<RootStackParamList>
+interface Props {
+  navigation: NavigationProp<RootStackParamList>
 }
 
 
 
-const Home: FC<Props> = ({navigation}): JSX.Element => {
 
-  
+
+const Home: FC<Props> = ({ navigation }): JSX.Element => {
+
+
   const handleImageCapture = async (): Promise<void> => {
     if (!helpers.isIOS) {
       await requestCameraPermission()
     }
     const { path, error } = await selectImage()
-    navigation.navigate("ImageEditor",{imageUri:path})
+    navigation.navigate("ImageEditor", { imageUri: path })
   }
-  const handleImageSelection=async():Promise<void>=>{
+  const handleImageSelection = async (): Promise<void> => {
 
-    const {path, error}=await selectImageFromDevice()
-    navigation.navigate("ImageEditor",{imageUri:path})
+    const { path, error } = await selectImageFromDevice()
+    navigation.navigate("ImageEditor", { imageUri: path })
   }
   return (
     <View style={styles.container}>
