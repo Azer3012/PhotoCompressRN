@@ -9,10 +9,11 @@ import BackgroundImage from '../../components/BackgroundImage';
 import SelectedImage from '../../components/SelectedImage';
 import EditorTools from '../../components/EditorTools';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { selectImage, selectImageFromDevice } from '../../utils/utils';
+import { readAndWritePermission, selectImage, selectImageFromDevice } from '../../utils/utils';
 import ConfirmModal from '../../components/ConfirmModal';
 import fsModule from '../../modules/fsModules';
 import Loading from '../../components/Loading';
+import PermissionWarning from '../../components/PermissionWarning';
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'ImageEditor'>
 interface Props {
@@ -27,6 +28,7 @@ const ImageEditor: FC<Props> = ({ route }): JSX.Element => {
     const [compressValue, setCompressValue] = useState<number>(1)
     const [compressedPercent, setCompressedPercent] = useState<number>(100)
     const [compressionStarts, setCompressionStarts] = useState<boolean>(false)
+    const [showPermissionWarning, setShowPermissionWarning] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false)
     const { imageUri } = route.params
 
@@ -59,7 +61,7 @@ const ImageEditor: FC<Props> = ({ route }): JSX.Element => {
     const hideConfirmModal = (): void => {
         setShowConfirmModal(false)
 
-        
+
     }
 
     const getImageSize = async (imageUri: string): Promise<void> => {
@@ -99,22 +101,27 @@ const ImageEditor: FC<Props> = ({ route }): JSX.Element => {
         setCompressedImage('')
 
     }
+
+    
     const handleImageSave = async (): Promise<void> => {
+
         try {
+            const isGranted = await readAndWritePermission();
+            if (isGranted) return setShowPermissionWarning(true)
             const name = 'pp-' + Date.now()
             const uri: string = compressedImage.split('file:///')[1]
             const test: number = Math.floor(compressValue * 100)
 
             const res = await fsModule.saveImageToDevice(uri, name, test)
             console.log(res);
-            
+
         } catch (error) {
             console.log(error);
 
         }
 
     }
-    
+
     useEffect(() => {
 
         if (imageUri && !selectedImage) {
@@ -152,6 +159,16 @@ const ImageEditor: FC<Props> = ({ route }): JSX.Element => {
                 onPrimaryBtnPress={hideConfirmModal}
                 onDangerBtnPress={handleMoveToBackPress}
             />
+
+            <PermissionWarning
+                visible={showPermissionWarning}
+                title='Required Camera Permision'
+                message='This app is heavily best on camera so you gave to accept the permision'
+                onClose={() => setShowPermissionWarning(false)}
+
+
+            />
+
         </View>
 
 

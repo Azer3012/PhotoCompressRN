@@ -6,6 +6,7 @@ import { checkCameraPermision, requestCameraPermission, selectImage, selectImage
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../Stacks/Stacks';
 import ConfirmModal from '../../components/ConfirmModal';
+import PermissionWarning from '../../components/PermissionWarning';
 
 interface Props {
   navigation: NavigationProp<RootStackParamList>
@@ -52,10 +53,7 @@ const Home: FC<Props> = ({ navigation }): JSX.Element => {
 
 
   }
-  const handleOpenSettings=():void=>{
-    setShowPermision(false)
-    Linking.openSettings()
-  }
+ 
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
@@ -70,15 +68,17 @@ const Home: FC<Props> = ({ navigation }): JSX.Element => {
         <LargeButton text='Capture' icon='camera' onPress={handleImageCapture} />
         <LargeButton text='Select' icon='folder' onPress={handleImageSelection} />
       </View>
-      <ConfirmModal
+
+      <PermissionWarning
         visible={showPermision}
-        primaryBtnTitle='Open Setting'
-        dangerBtnTitle='I will not!'
         title='Required Camera Permision'
         message='This app is heavily best on camera so you gave to accept the permision'
-        onDangerBtnPress={()=>setShowPermision(false)}
-        onPrimaryBtnPress={handleOpenSettings}
+
+        onClose={()=>setShowPermision(false)}
+        
+      
       />
+     
     </View>
 
   )
