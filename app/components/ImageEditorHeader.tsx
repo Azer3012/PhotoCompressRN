@@ -5,15 +5,18 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../Stacks/Stacks';
 
 
-interface Props { }
+interface Props {
+    onSavePress?:()=>void,
+    onBackPress?:()=>void
+ }
 
-const ImageEditorHeader: FC<Props> = (): JSX.Element => {
+const ImageEditorHeader: FC<Props> = ({onSavePress,onBackPress}): JSX.Element => {
     const navigation=useNavigation<NavigationProp<RootStackParamList>>()
     return (
         <View style={styles.container}>
             
-            <UtilityButtons.Back onPress={navigation.goBack} />
-            <UtilityButtons.Save />
+            <UtilityButtons.Back onPress={onBackPress} />
+            <UtilityButtons.Save onPress={onSavePress} />
         </View>
     )
 }

@@ -8,11 +8,14 @@ interface Props{
     visible?:boolean
     title?:string,
     message?:string
-    onCancelPress?:()=>void
-    onDiscardPress?:()=>void
+    dangerBtnTitle?:string
+    primaryBtnTitle?:string
+    onPrimaryBtnPress?:()=>void
+    onDangerBtnPress?:()=>void,
+
 }
 
-const ConfirmModal:FC<Props> = ({visible,title,message,onCancelPress,onDiscardPress}):JSX.Element => {
+const ConfirmModal:FC<Props> = ({visible,title,message,onPrimaryBtnPress,onDangerBtnPress,primaryBtnTitle,dangerBtnTitle}):JSX.Element => {
   return (
     <Modal isVisible={visible}>
         <View style={styles.container}>
@@ -20,11 +23,11 @@ const ConfirmModal:FC<Props> = ({visible,title,message,onCancelPress,onDiscardPr
                 <Text style={styles.modalTitle}>{title}</Text>
                 <Text style={styles.message}>{message}</Text>
                 <View style={styles.btnContainer}>
-                    <TouchableOpacity onPress={onCancelPress} style={[styles.btnStyle,styles.cancel]}>
-                        <Text style={styles.btnText}>Cancel</Text>
+                    <TouchableOpacity onPress={onPrimaryBtnPress} style={[styles.btnStyle,styles.cancel]}>
+                        <Text style={styles.btnText}>{primaryBtnTitle}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={onDiscardPress} style={[styles.btnStyle,styles.discard]}>
-                        <Text style={[styles.btnText,{color:colors.white}]}>Discard</Text>
+                    <TouchableOpacity onPress={onDangerBtnPress} style={[styles.btnStyle,styles.discard]}>
+                        <Text style={[styles.btnText,{color:colors.white}]}>{dangerBtnTitle}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

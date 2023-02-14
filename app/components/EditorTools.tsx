@@ -9,9 +9,15 @@ import Slider from '@react-native-community/slider';
 interface Props { 
     onSelectAnother?:()=>void
     onCaptureAnother?:()=>void
+    fileSize?:number,
+    onSliderChange?:(value:number)=>void
+    compressValue?:number,
+    compressedPercent?:number
+    onSlidingStart?:(value:number)=>void
+    onSlidingComplete?:(value:number)=>void
 }
 
-const EditorTools: FC<Props> = ({onSelectAnother,onCaptureAnother}): JSX.Element => {
+const EditorTools: FC<Props> = ({onSelectAnother,onCaptureAnother,fileSize,onSliderChange,compressValue,compressedPercent,onSlidingStart,onSlidingComplete}): JSX.Element => {
     return (
         <View style={styles.container}>
             <View style={styles.btnContainer}>
@@ -25,15 +31,21 @@ const EditorTools: FC<Props> = ({onSelectAnother,onCaptureAnother}): JSX.Element
                 </TouchableOpacity>
             </View>
             <View style={styles.infoContainer}>
-                <Text style={styles.infoText}>Compress to: 50%</Text>
-                <Text style={styles.infoText}>Image Size: 50kb</Text>
+                <Text style={styles.infoText}>Compress to: {compressedPercent}%</Text>
+                <Text style={styles.infoText}>Image Size: {fileSize}kb</Text>
             </View>
             <View style={styles.sliderContainer}>
                 <Slider
+                    minimumValue={0.1}
+                    maximumValue={1}
+                    value={compressValue}
                     style={{width:"100%",height:40}}
                     maximumTrackTintColor={colors.main80}
                     minimumTrackTintColor={colors.main}
                     thumbTintColor={colors.main}
+                    onValueChange={onSliderChange}
+                    onSlidingStart={onSlidingStart}
+                    onSlidingComplete={onSlidingComplete}
                     
                 />
             </View>
