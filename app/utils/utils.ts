@@ -32,7 +32,7 @@ type ImageResultType = {
 
 export const selectImage = async (width: number = 413, height: number = 531): Promise<ImageResultType> => {
     try {
-        
+
         const { path } = await ImagePicker.openCamera({
             width,
             height,
@@ -58,6 +58,20 @@ export const selectImageFromDevice = async (width: number = 413, height: number 
     }
 }
 
-export const checkCameraPermision=async():Promise<boolean>=>{
+export const checkCameraPermision = async (): Promise<boolean> => {
     return await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
+}
+
+export const readAndWritePermission = async (): Promise<boolean> => {
+    const res=await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+    ])
+    
+    const writePermission= res["android.permission.WRITE_EXTERNAL_STORAGE"]
+    const readPermission= res["android.permission.READ_EXTERNAL_STORAGE"]
+    if(writePermission!=='granted') return false;
+
+    return true;
+    
 }
