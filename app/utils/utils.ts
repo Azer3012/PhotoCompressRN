@@ -12,12 +12,12 @@ export const requestCameraPermission = async (): Promise<void> => {
             buttonPositive: 'OK',
         })
 
-        const { NEVER_ASK_AGAIN, DENIED } = PermissionsAndroid.RESULTS
+        // const { NEVER_ASK_AGAIN, DENIED } = PermissionsAndroid.RESULTS
 
-        if (granted === NEVER_ASK_AGAIN) return Alert.alert
-            ("Fail to open camera", "it is looks like you have disabled the camera permission")
-        if (granted === DENIED) return Alert.alert
-            ("Sorry but to use this feature you have to accept the Camera Permission!")
+        // if (granted === NEVER_ASK_AGAIN) return Alert.alert
+        //     ("Fail to open camera", "it is looks like you have disabled the camera permission")
+        // if (granted === DENIED) return Alert.alert
+        //     ("Sorry but to use this feature you have to accept the Camera Permission!")
     } catch (error) {
         console.log(error);
 
@@ -32,6 +32,7 @@ type ImageResultType = {
 
 export const selectImage = async (width: number = 413, height: number = 531): Promise<ImageResultType> => {
     try {
+        
         const { path } = await ImagePicker.openCamera({
             width,
             height,
@@ -55,4 +56,8 @@ export const selectImageFromDevice = async (width: number = 413, height: number 
     catch (error) {
         return { path: '', error }
     }
+}
+
+export const checkCameraPermision=async():Promise<boolean>=>{
+    return await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.CAMERA)
 }

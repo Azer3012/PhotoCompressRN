@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { FC } from 'react';
+import { Linking, StyleSheet, Text, View } from 'react-native';
+import React, { FC, useState } from 'react';
 import helpers from '../../helpers/helpers';
 import LargeButton from '../../components/LargeButton';
-import { requestCameraPermission, selectImage, selectImageFromDevice } from '../../utils/utils';
+import { checkCameraPermision, requestCameraPermission, selectImage, selectImageFromDevice } from '../../utils/utils';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../Stacks/Stacks';
+import ConfirmModal from '../../components/ConfirmModal';
 
 interface Props {
   navigation: NavigationProp<RootStackParamList>
@@ -17,17 +18,43 @@ interface Props {
 const Home: FC<Props> = ({ navigation }): JSX.Element => {
 
 
+  const [showPermision,setShowPermision]=useState<boolean>(false)
   const handleImageCapture = async (): Promise<void> => {
-    if (!helpers.isIOS) {
-      await requestCameraPermission()
-    }
+
+    await requestCameraPermission()
+
     const { path, error } = await selectImage()
+    let isGranted: boolean = false
+    if (error) {
+      isGranted = await checkCameraPermision()
+      if (!isGranted) return setShowPermision(true);
+      return;
+    }
+   
+
     navigation.navigate("ImageEditor", { imageUri: path })
   }
   const handleImageSelection = async (): Promise<void> => {
 
+    await requestCameraPermission()
+
+
     const { path, error } = await selectImageFromDevice()
+
+    let isGranted: boolean = false
+    if (error) isGranted = await checkCameraPermision()
+    if (!isGranted) return console.log("Not granted");
+
+    if(!path){
+      return
+    }
     navigation.navigate("ImageEditor", { imageUri: path })
+
+
+  }
+  const handleOpenSettings=():void=>{
+    setShowPermision(false)
+    Linking.openSettings()
   }
   return (
     <View style={styles.container}>
@@ -43,6 +70,15 @@ const Home: FC<Props> = ({ navigation }): JSX.Element => {
         <LargeButton text='Capture' icon='camera' onPress={handleImageCapture} />
         <LargeButton text='Select' icon='folder' onPress={handleImageSelection} />
       </View>
+      <ConfirmModal
+        visible={showPermision}
+        primaryBtnTitle='Open Setting'
+        dangerBtnTitle='I will not!'
+        title='Required Camera Permision'
+        message='This app is heavily best on camera so you gave to accept the permision'
+        onDangerBtnPress={()=>setShowPermision(false)}
+        onPrimaryBtnPress={handleOpenSettings}
+      />
     </View>
 
   )

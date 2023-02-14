@@ -1,16 +1,18 @@
 import { Image, StyleSheet, View } from 'react-native';
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import helpers from '../helpers/helpers';
 import colors from '../values/colors';
 
 interface Props{
-    uri:string
+    uri:string,
+    children?:ReactNode
 }
 
-const SelectedImage:FC<Props> = ({uri}):JSX.Element => {
+const SelectedImage:FC<Props> = ({uri,children}):JSX.Element | null => {
+  if(!uri) return null
   return (
     <View style={styles.container}>
-        <Image style={styles.image} source={{uri:uri}}/>
+       {children ||  <Image style={styles.image} source={{uri:uri}}/>}
     </View>
   )
 }
@@ -23,7 +25,9 @@ const styles = StyleSheet.create({
     height:helpers.px(265),
     elevation:15,
     padding:helpers.px(10),
-    backgroundColor:colors.white
+    backgroundColor:colors.white,
+    justifyContent:'center',
+    alignItems:'center'
   },
   image:{
     width:'100%',
