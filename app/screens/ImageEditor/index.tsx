@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import React, { FC, useEffect, useState } from 'react';
 import Layout from '../../Layout';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -14,6 +14,7 @@ import ConfirmModal from '../../components/ConfirmModal';
 import fsModule from '../../modules/fsModules';
 import Loading from '../../components/Loading';
 import PermissionWarning from '../../components/PermissionWarning';
+import FlashMessage, { showMessage, hideMessage } from "react-native-flash-message";
 
 type RouteProps = NativeStackScreenProps<RootStackParamList, 'ImageEditor'>
 interface Props {
@@ -102,18 +103,35 @@ const ImageEditor: FC<Props> = ({ route }): JSX.Element => {
 
     }
 
-    
+
     const handleImageSave = async (): Promise<void> => {
 
         try {
             const isGranted = await readAndWritePermission();
-            if (isGranted) return setShowPermissionWarning(true)
+            if (!isGranted) return setShowPermissionWarning(true)
             const name = 'pp-' + Date.now()
             const uri: string = compressedImage.split('file:///')[1]
             const test: number = Math.floor(compressValue * 100)
 
             const res = await fsModule.saveImageToDevice(uri, name, test)
-            console.log(res);
+
+
+            if (res) {
+                showMessage({
+                    message: "Your photo is ready. Control this file dorectory: Files/Pictures  ",
+                    type: "success"
+                })
+
+                setTimeout(() => {
+                    navigation.navigate("Home")
+                }, 2000);
+            }
+
+
+
+
+
+
 
         } catch (error) {
             console.log(error);
@@ -168,6 +186,8 @@ const ImageEditor: FC<Props> = ({ route }): JSX.Element => {
 
 
             />
+
+            <FlashMessage position="top" />
 
         </View>
 
