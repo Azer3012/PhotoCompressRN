@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { Alert, Dimensions, PixelRatio, Platform } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import Toast from 'react-native-toast-message';
 import colors from '../values/colors';
 
 
@@ -81,12 +82,12 @@ api(headers={}){
   })
 }
 
-//   toast(message, type) {
-//     Toast.show({
-//       type: type || 'error',
-//       text1: message,
-//     });
-//   }
+  toast(message, type) {
+    Toast.show({
+      type: type || 'error',
+      text1: message,
+    });
+  }
 
   handleError(error) {
     console.log({ error })
